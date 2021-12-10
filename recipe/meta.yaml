@@ -1,5 +1,6 @@
 {% set name = "libvpx" %}
 {% set version = "1.11.0" %}
+{% set p = "m2-" if win else "" %}
 
 package:
   name: {{ name }}
@@ -10,7 +11,7 @@ source:
   sha256: 965e51c91ad9851e2337aebcc0f517440c637c506f3a03948062e3d5ea129a83
 
 build:
-  number: 3 
+  number: 0
   skip: True  # [win]
   run_exports:
     # new so names and compatibility changes on minor version
@@ -22,14 +23,24 @@ requirements:
   build:
     - {{ compiler('c') }}
     - {{ compiler('cxx') }}
-    - make
+    - posix                     # [win]
+    - {{ p }}git
+    - {{ p }}make
+    - {{ p }}libtool
+    - m2w64-toolchain          # [win]
     - yasm
+  run:
+    - m2w64-gcc-libs           # [win]
 
 test:
+  requires:
+    - conda-build
   commands:
     - test -f ${PREFIX}/lib/libvpx${SHLIB_EXT}
     - ${PREFIX}/bin/vpxenc --help  # [build_platform == target_platform]
     - ${PREFIX}/bin/vpxdec --help  # [build_platform == target_platform]
+    - conda inspect linkages -p $PREFIX libvpx    # [not win]
+    - conda inspect objects -p $PREFIX libvpx     # [osx]
 
 about:
   home: https://www.webmproject.org/
