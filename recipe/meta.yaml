@@ -12,7 +12,7 @@ source:
 
 build:
   number: 0
-  skip: True  # [win]
+  skip: True  # [win or s390x]
   run_exports:
     # new so names and compatibility changes on minor version
     # https://abi-laboratory.pro/tracker/timeline/libvpx/
