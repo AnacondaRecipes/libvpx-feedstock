@@ -17,17 +17,11 @@ fi
 CPU_DETECT=""
 if [[ ${target_platform} == osx-* ]]; then
     CPU_DETECT="${CPU_DETECT} --disable-avx512 --disable-runtime-cpu-detect"
-    if [[ ${target_platform} == osx-arm64 ]]; then
-        TARGET="--target=arm64-darwin20-gcc"
-        export CROSS=arm64-apple-darwin20.0.0-
-        # -fembed-bitcode conflicts with a conda-forge LD option (-dead_strip_dylibs)
-        sed -i.bak "/check_add_ldflags -fembed-bitcode/d" build/make/configure.sh
-    fi
 else
     CPU_DETECT="${CPU_DETECT} --enable-runtime-cpu-detect"
 fi
 
-./configure --prefix=${PREFIX} ${TARGET} \
+./configure --prefix=${PREFIX} ${HOST_BUILD} \
 --as=yasm                    \
 --enable-shared              \
 --disable-static             \
