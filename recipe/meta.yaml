@@ -1,5 +1,5 @@
 {% set name = "libvpx" %}
-{% set version = "1.16.0" %}
+{% set version = "1.17.0" %}
 
 package:
   name: {{ name }}
@@ -12,12 +12,11 @@ source:
 
 build:
   number: 0
-  skip: True  # [win]
+  skip: true  # [win]
   run_exports:
     # new so names and compatibility changes on minor version
     # https://abi-laboratory.pro/tracker/timeline/libvpx/
     - {{ pin_subpackage('libvpx', max_pin='x.x') }}
-
 
 requirements:
   build:
